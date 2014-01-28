@@ -12,6 +12,7 @@
 *   Modified:   2014/01/13 by Yong Chen <chenyo@us.ibm.com>
 *   Changes:    Don't rotate if IE8 due to header hover issues
 *               Add IE8 image replacement for headers
+*               Add public functions to activate/deactivate slides
 **************************************************/
 
 ;(function($) {
@@ -88,6 +89,28 @@
                 prev : function() {
                     methods.stop();
                     header.eq(core.currentSlide - 1).trigger('click.liteAccordion');
+                },
+
+                // activate slide
+                activate : function(slide) {
+                    if($.isArray(slide)) {
+                        for(var i=0,l=slide.length;i<l;i++) {
+                            core.bindEvents(slide[i]);
+                        }
+                    } else {
+                        core.bindEvents(slide);
+                    }
+                },
+
+                // deactivate slide
+                deactivate : function(slide) {
+                    if($.isArray(slide)) {
+                        for(var i=0,l=slide.length;i<l;i++) {
+                            core.unbindEvents(slide[i]);
+                        }
+                    } else {
+                        core.unbindEvents(slide);
+                    }
                 },
 
                 // destroy plugin instance
@@ -197,39 +220,60 @@
                 },
 
                 // bind events
-                bindEvents : function() {
+                bindEvents : function(index) {
                     // bind click and mouseover events
                     if (settings.activateOn === 'click') {
-                        header.on('click.liteAccordion', core.triggerSlide);
+                        if(index === undefined) {
+                            header.on('click.liteAccordion', core.triggerSlide);
+                        } else {
+                            header.eq(index).on('click.liteAccordion', core.triggerSlide);
+                        }
                     } else if (settings.activateOn === 'mouseover') {
-                        header.on('click.liteAccordion mouseover.liteAccordion', core.triggerSlide);
+                        if(index === undefined) {
+                            header.on('click.liteAccordion mouseover.liteAccordion', core.triggerSlide);
+                        } else {
+                            header.eq(index).on('click.liteAccordion mouseover.liteAccordion', core.triggerSlide);
+                        }
                     }
 
-                    // bind hashchange event
-                    if (settings.linkable) {
-                        $(window).on('hashchange.liteAccordion', function(e) {
-                            var url = slides.filter(function() {
-                                return $(this).attr('data-slide-name') === window.location.hash.split('#')[1];
+                    // only run following if not binding specific slide
+                    if(index === undefined) {
+                        // bind hashchange event
+                        if (settings.linkable) {
+                            $(window).on('hashchange.liteAccordion', function(e) {
+                                var url = slides.filter(function() {
+                                    return $(this).attr('data-slide-name') === window.location.hash.split('#')[1];
+                                });
+
+                                // if slide name exists
+                                if (url.length) {
+                                    // trigger slide
+                                    core.triggerSlide.call(url.children(settings.headerSelector)[0], e);
+                                }
                             });
+                        }
 
-                            // if slide name exists
-                            if (url.length) {
-                                // trigger slide
-                                core.triggerSlide.call(url.children(settings.headerSelector)[0], e);
-                            }
-                        });
+                        // pause on hover (can't use custom events with $.hover())
+                        if (settings.pauseOnHover && settings.autoPlay) {
+                            elem
+                                .on('mouseover.liteAccordion', function() {
+                                    core.playing && methods.stop();
+                                })
+                                .on('mouseout.liteAccordion', function() {
+                                    !core.playing && methods.play(core.currentSlide);
+                                });
+                        }
                     }
+                },
 
-                    // pause on hover (can't use custom events with $.hover())
-                    if (settings.pauseOnHover && settings.autoPlay) {
-                        elem
-                            .on('mouseover.liteAccordion', function() {
-                                core.playing && methods.stop();
-                            })
-                            .on('mouseout.liteAccordion', function() {
-                                !core.playing && methods.play(core.currentSlide);
-                            });
-                    }
+                // unbind activation events
+                unbindEvents : function(index) {
+                  // bind click and mouseover events
+                  if (settings.activateOn === 'click') {
+                      header.eq(index).off('click.liteAccordion');
+                  } else if (settings.activateOn === 'mouseover') {
+                      header.eq(index).off('click.liteAccordion mouseover.liteAccordion');
+                  }
                 },
 
                 // image replacement for IE8 because rotation filter causes hovering issues, allowing click only
