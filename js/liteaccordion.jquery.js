@@ -11,6 +11,7 @@
 *
 *   Modified:   2014/01/13 by Yong Chen <chenyo@us.ibm.com>
 *   Changes:    Don't rotate if IE8 due to header hover issues
+*               Add IE8 image replacement for headers
 **************************************************/
 
 ;(function($) {
@@ -22,6 +23,7 @@
             containerHeight : 320,                  // fixed (px)
             headerWidth : 48,                       // fixed (px)
 
+            headerSelector : 'h2',                  // selector for tab header
             activateOn : 'click',                   // click or mouseover
             firstSlide : 1,                         // displays slide (n) on page load
             slideSpeed : 800,                       // slide animation speed
@@ -38,7 +40,11 @@
             enumerateSlides : false,                // put numbers on slides
             linkable : false,                       // link slides via hash
 
-            headerSelector : 'h2'                   // selector for tab header
+            useIE8Images : false,                   // whether to use image replacement for IE8
+            imagePath : undefined,                  // folder in which images are located without trailing slash
+            imagePrefix : undefined,                // prefix for all header images
+            imageType : undefined,                  // type of images used: png, jpg, gif, etc
+            imageAlts : []                          // alt tags for header images in same order as headers
         },
 
         // merge defaults with options in new settings object
@@ -226,6 +232,21 @@
                     }
                 },
 
+                // image replacement for IE8 because rotation filter causes hovering issues, allowing click only
+                // on top X px of non-rotated content
+                replaceHeaders : function() {
+                    var alt_length = settings.imageAlts.length;
+                    header.empty().each(function(i) {
+                        var img = $('<img>').attr({
+                          src: settings.imagePath + '/' + settings.imagePrefix + i + '.' + settings.imageType,
+                          height: settings.containerHeight,
+                          width: settings.headerWidth,
+                          alt: i<alt_length ? settings.imageAlts[i] : ''
+                        });
+                        $(this).append(img);
+                    });
+                },
+
                 // counter for autoPlay (zero index firstSlide on init)
                 currentSlide : settings.firstSlide - 1,
 
@@ -388,6 +409,21 @@
                     // init styles and events
                     core.setStyles();
                     core.bindEvents();
+
+                    // check for IE8 image replacement
+                    if(settings.useIE8Images && ie8) {
+                        // check to make sure all image* settings !== undefined
+                        if(settings.imagePath === undefined) {
+                            throw new Error("liteAccordion: useIE8Images set to true, but imagePath is not defined");
+                        }
+                        if(settings.imagePrefix === undefined) {
+                            throw new Error("liteAccordion: useIE8Images set to true, but imagePrefix is not defined");
+                        }
+                        if(settings.imageType === undefined) {
+                            throw new Error("liteAccordion: useIE8Images set to true, but imageType is not defined");
+                        }
+                        core.replaceHeaders();
+                    }
 
                     // check slide speed is not faster than cycle speed
                     if (settings.cycleSpeed < settings.slideSpeed) settings.cycleSpeed = settings.slideSpeed;
