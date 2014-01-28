@@ -233,12 +233,12 @@
 
 /* transforms */
 .liteAccordion.ie .slide > div.tabTitle,
-.liteAccordion.ie .slide > div.tabTitle span,
+.liteAccordion.ie .slide > div.tabTitle > span,
 .liteAccordion.ie .slide > div.tabTitle b { filter: none; -ms-filter: none; -ms-transform: none }
 .liteAccordion.ie7 .slide > div.tabTitle { filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3) }
 .liteAccordion.ie7 .slide > div.tabTitle b { filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1) }
-.liteAccordion.ie8 .slide > div.tabTitle { -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)" }
-.liteAccordion.ie8 .slide > div.tabTitle b { -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)" }
+/*.liteAccordion.ie8 .slide > div.tabTitle { -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)" }
+.liteAccordion.ie8 .slide > div.tabTitle b { -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)" }*/
 .liteAccordion.ie9 .slide > div.tabTitle { -ms-transform: translateX(-100%) rotate(-90deg); -ms-transform-origin: right top }
 .liteAccordion.ie9 .slide > div.tabTitle b { -ms-transform: rotate(90deg) }
 

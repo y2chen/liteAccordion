@@ -9,6 +9,8 @@
 *   Copyright:  (c) 2010-2013 Nicola Hibbert
 *   Licence:    MIT
 *
+*   Modified:   2014/01/13 by Yong Chen <chenyo@us.ibm.com>
+*   Changes:    Don't rotate if IE8 due to header hover issues
 **************************************************/
 
 ;(function($) {
@@ -47,6 +49,7 @@
             header = slides.children(':first-child'),
             slideLen = slides.length,
             slideWidth = settings.containerWidth - slideLen * settings.headerWidth,
+            ie8 = false,
 
         // public methods
             methods = {
@@ -135,10 +138,14 @@
                         .addClass(settings.theme);
 
                     // set slide heights
-                    slides
+                    var c = slides
                         .addClass('slide')
-                        .children(':first-child')
-                        .height(settings.headerWidth);
+                        .children(':first-child');
+                    if(!ie8) {
+                        c.height(settings.headerWidth);
+                    } else {
+                        c.width(settings.headerWidth);
+                    }
 
                     // set slide positions
                     core.setSlidePositions();
@@ -165,9 +172,14 @@
                         }
 
                         // set each slide position
+                        if(!ie8) {
+                            $this.width(settings.containerHeight);
+                        } else {
+                            $this.height(settings.containerHeight);
+                        }
+
                         $this
                             .css('left', left)
-                            .width(settings.containerHeight)
                             .next()
                                 .width(slideWidth - offset)
                                 .css({ left : left, paddingLeft : settings.headerWidth });
@@ -355,6 +367,9 @@
                         slides.each(function(index) {
                             $(this).addClass('slide-' + index);
                         });
+                    }
+                    if (version === 8) {
+                        ie8 = true;
                     }
 
                     elem.addClass('ie ie' + version);
