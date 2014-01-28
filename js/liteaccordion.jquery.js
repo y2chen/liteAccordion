@@ -34,7 +34,9 @@
             theme : 'basic',                        // basic, dark, light, or stitch
             rounded : false,                        // square or rounded corners
             enumerateSlides : false,                // put numbers on slides
-            linkable : false                        // link slides via hash
+            linkable : false,                       // link slides via hash
+
+            headerSelector : 'h2'                   // selector for tab header
         },
 
         // merge defaults with options in new settings object
@@ -195,7 +197,7 @@
                             // if slide name exists
                             if (url.length) {
                                 // trigger slide
-                                core.triggerSlide.call(url.children('h2')[0], e);
+                                core.triggerSlide.call(url.children(settings.headerSelector)[0], e);
                             }
                         });
                     }
@@ -237,7 +239,7 @@
                             elem : $this,
                             index : header.index($this),
                             next : $this.next(),
-                            prev : $this.parent().prev().children('h2'),
+                            prev : $this.parent().prev().children(settings.headerSelector),
                             parent : $this.parent()
                         };
 
@@ -325,14 +327,14 @@
 
                         slides
                             .filter(filterExpr)
-                            .children('h2')
+                            .children(settings.headerSelector)
                             .each(function() {
                                 var $this = $(this),
                                     tab = {
                                         elem : $this,
                                         index : header.index($this),
                                         next : $this.next(),
-                                        prev : $this.parent().prev().children('h2'),
+                                        prev : $this.parent().prev().children(settings.headerSelector),
                                         pos : left
                                     };
 
