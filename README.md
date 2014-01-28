@@ -2,6 +2,11 @@
 
 liteAccordion is a horizontal accordion plugin for jQuery, originally developed by [Nicola Hibbert](http://nicolahibbert.com/liteaccordion-v2/).
 
+I've modified and added some code handling to suit my needs, including:
+* customizable tab header selector (if you change it, CSS will need to be updated as well)
+* support for using images for IE8 tab headers (mouseover and click is broken when object is rotated)
+* additional functions to enable/disable tabs, and go to a specific tab
+
 ***
 ###Options
 
