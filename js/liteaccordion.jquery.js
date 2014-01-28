@@ -236,6 +236,10 @@
                         }
                     }
 
+                    if(settings.useIE8Images && ie8 && index !== undefined) {
+                        header.eq(index).children('img').attr('src',settings.imagePath + '/' + settings.imagePrefix + index + '.' + settings.imageType);
+                    }
+
                     // only run following if not binding specific slide
                     if(index === undefined) {
                         // bind hashchange event
@@ -268,12 +272,15 @@
 
                 // unbind activation events
                 unbindEvents : function(index) {
-                  // bind click and mouseover events
-                  if (settings.activateOn === 'click') {
-                      header.eq(index).off('click.liteAccordion').addClass('disabled');
-                  } else if (settings.activateOn === 'mouseover') {
-                      header.eq(index).off('click.liteAccordion mouseover.liteAccordion').addClass('disabled');
-                  }
+                    // bind click and mouseover events
+                    if (settings.activateOn === 'click') {
+                        header.eq(index).off('click.liteAccordion').addClass('disabled');
+                    } else if (settings.activateOn === 'mouseover') {
+                        header.eq(index).off('click.liteAccordion mouseover.liteAccordion').addClass('disabled');
+                    }
+                    if(settings.useIE8Images && ie8) {
+                        header.eq(index).children('img').attr('src',settings.imagePath + '/' + settings.imagePrefix + index + '_disabled.' + settings.imageType);
+                    }
                 },
 
                 // image replacement for IE8 because rotation filter causes hovering issues, allowing click only
