@@ -1,11 +1,6 @@
 ##[liteAccordion](http://nicolahibbert.com/demo/liteAccordion/)
 
-liteAccordion is a horizontal accordion plugin for jQuery.
-
-Please post any support or feature requests [here](http://nicolahibbert.com/liteaccordion-v2/).
-**Please do not post support requests on the issue tracker!**
-
-Follow me on Twitter [@nicolahibbert](http://twitter.com/nicolahibbert) for liteAccordion development news.
+liteAccordion is a horizontal accordion plugin for jQuery, originally developed by [Nicola Hibbert](http://nicolahibbert.com/liteaccordion-v2/).
 
 ***
 ###Options
@@ -16,6 +11,7 @@ These are the default settings for the liteAccordion plugin:
     containerHeight : 320,                  // fixed (px)
     headerWidth: 48,                        // fixed (px)
 
+    headerSelector : 'h2',                  // selector for tab header
     activateOn : 'click',                   // click or mouseover
     firstSlide : 1,                         // displays slide (n) on page load
     slideSpeed : 800,                       // slide animation speed
@@ -30,7 +26,13 @@ These are the default settings for the liteAccordion plugin:
     theme : 'basic',                        // basic, dark, light, or stitch
     rounded : false,                        // square or rounded corners
     enumerateSlides : false,                // put numbers on slides
-    linkable : false                        // link slides via hash
+    linkable : false,                       // link slides via hash
+
+    useIE8Images : false,                   // whether to use image replacement for IE8
+    imagePath : undefined,                  // folder in which images are located without trailing slash
+    imagePrefix : undefined,                // prefix for all header images
+    imageType : undefined,                  // type of images used: png, jpg, gif, etc
+    imageAlts : []                          // alt tags for header images in same order as headers
 
 ***
 ###Methods
@@ -41,6 +43,9 @@ These are the methods for the liteAccordion plugin:
 	stop									// stop an accordion playing
 	next									// trigger the next slide
 	prev									// trigger the previous slide
+    gotoslide                               // go to specific slide
+    activate                                // enable single or array of slides
+    deactivate                              // disable single or array of slides
 	destroy									// remove the accordion, destroying all event handlers and styles (unstyled html content will remain)
 	debug									// returns a debug object
 
@@ -52,79 +57,13 @@ To chain methods:
 
 $('#yourdiv').liteAccordion('next').liteAccordion('next');
 
-***
-###Changelog
+To pass a variable into a  method:
 
-**v2.2** - 21/01/2013
+$('#yourdiv').liteAccordion('gotoslide',1);
 
- - removed responsive option
- - removed autoScale images option
- - fixed issue #66
- - fixed minor css bugs (ie10)
+or
 
-**v2.1.1** - 10/09/2012
-
-- fixed issue #58
-
-**v2.1** - 19/08/2012
-
-- added responsive layout option
-- added minContainerWidth and maxContainerWidth properties for use with responsive option
-- added autoScale images option
-- click or hover on selected header now triggers slide
-- linkable now uses 'data-slide-name' instead of 'name'
-- $.browser no longer used
-
-**v2.0.3** - 18/08/2012
-
-- Chrome residual animation artifacts bug fix
-
-**v2.0.2** - 23/01/2012
-
-- slide width fix for IE
-- added documentation for methods
-
-**v2.0.1** - 23/11/2011
-
-- added css hook on each slide for ie7 & ie8
-- css fixes for ie7 & ie8
-- css improvements for other browsers
-
-**v2.0** - 16/11/2011
-
-- new methods:
-    - play
-    - stop
-    - next
-    - prev
-    - destroy
-    - debug
-- rewrote plugin to expose methods
-- refactored core
-- refactored css, styles no longer cascade into slide content divs
-- mouseover activation
-- easing support
-- linkable slides via hashchange
-- two new themes:
-    - light
-    - stitch
-- demo suite available
-
-**v1.1.3** - 06/04/2011
-
-- IE bug fixes
-
-**v1.1.1, v1.1.2** - 27/03/2011
-
-- IE bug fixes
-
-**v1.1** - 21/03/2011
-
-- Added a pause on hover feature
-
-**v1.0** - 02/03/2011
-
-- First release
+$('#yourdiv').liteAccordion('deactivate',[2,3]);
 
 ###Not Supported/Won't Fix
 
