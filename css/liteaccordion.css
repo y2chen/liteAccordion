@@ -38,6 +38,9 @@
     transform: translateX(-100%) rotate(-90deg);
     transform-origin: right top;
 }
+.liteAccordion .slide > div.tabTitle.disabled {
+    cursor: default;
+}
 .liteAccordion .slide > div.tabTitle > span {
     display: block;
 /*    padding-right: 8%;

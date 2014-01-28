@@ -226,13 +226,13 @@
                         if(index === undefined) {
                             header.on('click.liteAccordion', core.triggerSlide);
                         } else {
-                            header.eq(index).on('click.liteAccordion', core.triggerSlide);
+                            header.eq(index).on('click.liteAccordion', core.triggerSlide).removeClass('disabled');
                         }
                     } else if (settings.activateOn === 'mouseover') {
                         if(index === undefined) {
                             header.on('click.liteAccordion mouseover.liteAccordion', core.triggerSlide);
                         } else {
-                            header.eq(index).on('click.liteAccordion mouseover.liteAccordion', core.triggerSlide);
+                            header.eq(index).on('click.liteAccordion mouseover.liteAccordion', core.triggerSlide).removeClass('disabled');
                         }
                     }
 
@@ -270,9 +270,9 @@
                 unbindEvents : function(index) {
                   // bind click and mouseover events
                   if (settings.activateOn === 'click') {
-                      header.eq(index).off('click.liteAccordion');
+                      header.eq(index).off('click.liteAccordion').addClass('disabled');
                   } else if (settings.activateOn === 'mouseover') {
-                      header.eq(index).off('click.liteAccordion mouseover.liteAccordion');
+                      header.eq(index).off('click.liteAccordion mouseover.liteAccordion').addClass('disabled');
                   }
                 },
 
@@ -485,7 +485,7 @@
 
     };
 
-    $.fn.liteAccordion = function(method) {
+    $.fn.liteAccordion = function(method, params) {
         var elem = this,
             instance = elem.data('liteAccordion');
 
@@ -508,7 +508,7 @@
             if (method === 'debug') {
                 return instance[method].call(elem);
             } else { // the rest of the methods are chainable though
-                instance[method].call(elem);
+                instance[method].call(elem, params);
                 return elem;
             }
         }
