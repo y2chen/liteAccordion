@@ -95,10 +95,10 @@
                 activate : function(slide) {
                     if($.isArray(slide)) {
                         for(var i=0,l=slide.length;i<l;i++) {
-                            core.bindEvents(slide[i]);
+                            core.bindEvents(slide[i]-1);
                         }
                     } else {
-                        core.bindEvents(slide);
+                        core.bindEvents(slide-1);
                     }
                 },
 
@@ -106,10 +106,10 @@
                 deactivate : function(slide) {
                     if($.isArray(slide)) {
                         for(var i=0,l=slide.length;i<l;i++) {
-                            core.unbindEvents(slide[i]);
+                            core.unbindEvents(slide[i]-1);
                         }
                     } else {
-                        core.unbindEvents(slide);
+                        core.unbindEvents(slide-1);
                     }
                 },
 
