@@ -12,7 +12,7 @@
 *   Modified:   2014/01/13 by Yong Chen
 *   Changes:    Don't rotate if IE8 due to header hover issues
 *               Add IE8 image replacement for headers
-*               Add public functions to activate/deactivate slides
+*               Add public functions to activate/deactivate slides, go to slide
 **************************************************/
 
 ;(function($) {
@@ -89,6 +89,12 @@
                 prev : function() {
                     methods.stop();
                     header.eq(core.currentSlide - 1).trigger('click.liteAccordion');
+                },
+
+                // trigger specific slide
+                gotoslide : function(slide) {
+                    methods.stop();
+                    header.eq(slide - 1).trigger('click.liteAccordion');
                 },
 
                 // activate slide
